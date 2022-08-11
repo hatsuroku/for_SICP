@@ -1,0 +1,63 @@
+#lang scheme
+
+(define mod remainder)
+
+;2.20
+(define (filter ok? seq)
+  (cond [(null? seq) '()]
+        [(ok? (car seq))
+         (cons (car seq) (filter ok? (cdr seq)))]
+        [else (filter ok? (cdr seq))]))
+(define (same-parity first . rest)
+  (cons first
+        (filter (if (even? first)
+              even?
+              odd?)
+          rest))
+)
+
+(define (count-leaves tree)
+  (cond ((null? tree) 0)
+        ((not (pair? tree)) 1)
+        (else (+ (count-leaves (car tree))
+                 (count-leaves (cdr tree))))))
+;2.18
+(define (reverse lst)
+  (if (null? lst)
+      lst
+      (append (reverse (cdr lst)) (cons (car lst) '()))))
+
+;2.27
+(define (deep-reverse lst)
+  (cond ((null? lst) lst)
+        ((list? (car lst)) (append (deep-reverse (cdr lst)) (list (reverse (car lst)))))
+        (else (append (deep-reverse (cdr lst)) (list (car lst))))))
+
+;2.23
+(define (for-each proc lst)
+  (if (null? lst)
+      (void)
+      ; lambda 作为顺序执行的媒介
+      ((lambda ()
+        (proc (car lst))
+        (for-each proc (cdr lst))))))
+
+;2.28
+(define (fringe tree)
+  (cond [(null? tree) '()]
+        [(not (list? (car tree)))
+         (cons (car tree) (fringe (cdr tree)))]
+        [else (append (fringe (car tree)) (fringe (cdr tree)))]))
+
+;(define x '((1 2) (3 4)))
+;(fringe (list x x))
+
+
+(define (memq item x)
+  (cond [(null? x) false]
+        [(eq? item (car x)) x]
+        [else (memq item (cdr x))]))
+
+(define (myequal? a b)
+  (cond [(and (null? a) (null? b)) #t]
+        
