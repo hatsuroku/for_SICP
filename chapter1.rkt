@@ -174,7 +174,7 @@
 (define (miller-fast-prime? n times)
   (cond [(or (= n 2) (= n 3)) #t]
         [(= times 0) #t]
-        [(miller-rabin-test n) (fast-prime? n (- times 1))]
+        [(miller-rabin-test n) (miller-fast-prime? n (- times 1))]
         [else #f]))
 
 (define (prime? n)
